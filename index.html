@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUD API Interaction</title>
+</head>
+<body>
+<button id="loginBtn">Login</button>
+<button id="criarUsuario">Criar Usuario</button>
+<button id="buscarsuario">Buscar Usuarios</button>
+<button id="atualizarUsuario">Atualizar 1º Usuario</button>
+<button id="excluirUsuario">Excluir Usuario</button>
+<ul id="usersList"></ul>
+
+<script src="assets/js/ApiService.js"></script>
+<script>
+  const apiService = new ApiService('http://localhost:8000/app/Router/UsuarioRouter.php');
+  apiService.attachEventListeners();
+</script>
+</body>
+</html>
