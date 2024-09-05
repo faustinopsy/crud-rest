@@ -59,7 +59,7 @@ Esta API fornece um conjunto de endpoints para operações CRUD (Create, Read, U
 
 Base URL
 Supondo que o servidor esteja executando localmente na porta 8000, a URL base será: http://localhost:8000/
-
+iniciar o servidor dentro da pasta app do projeto
 #### Autenticação de Usuários (Login)
 URL: /login?action=login
 Método: POST
