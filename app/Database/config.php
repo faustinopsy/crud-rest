@@ -10,7 +10,7 @@ return [
             'charset' => 'utf8'
         ],
         'sqlite' => [
-            'path' => 'C:/Users/DELL/Downloads/OneDrive/Documentos/GitHub/fullcalendar/App/Database/agenda.db',
+            'path' => 'agenda.db',
         ],
         'sqlsrv' => [
             'host' => 'localhost',
