@@ -1,8 +1,7 @@
 <?php
 require "../../vendor/autoload.php";
-
-use App\Controller\UsuarioController;
 use App\Http\HttpHeader;
+use App\Controller\UsuarioController;
 use App\Repository\UsuarioRepository;
 
 HttpHeader::setDefaultHeaders();
