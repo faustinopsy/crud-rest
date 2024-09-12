@@ -4,6 +4,8 @@ require "../vendor/autoload.php";
 use App\Controller\UsuarioController;
 use App\Model\Usuario;
 
+$model = new Usuario();
+$controller = new UsuarioController($model);
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -17,8 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
 
-$model = new Usuario();
-$controller = new UsuarioController($model);
+
 $resposta = null;
 
 

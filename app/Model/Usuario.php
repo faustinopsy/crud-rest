@@ -14,7 +14,19 @@ class Usuario {
     public function __construct() {
         $this->conn = Database::getInstance();
     }
+    public function insertUsuario($usuario) {
+        $nome = $usuario->getNome();
+        $email = $usuario->getEmail();
+        $senha = $usuario->getSenha();
+        $query = "INSERT INTO $this->table (nome, email, senha) VALUES (:nome, :email, :senha)";
 
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":nome", $nome);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":senha", $senha);
+
+        return $stmt->execute();
+    }
     public function getUsuarioId(){
         return $this->usuario_id;
     }
@@ -62,19 +74,7 @@ class Usuario {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
-    public function insertUsuario($usuario) {
-        $nome = $usuario->getNome();
-        $email = $usuario->getEmail();
-        $senha = $usuario->getSenha();
-        $query = "INSERT INTO $this->table (nome, email, senha) VALUES (:nome, :email, :senha)";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":nome", $nome);
-        $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":senha", $senha);
-
-        return $stmt->execute();
-    }
+    
 
     public function getAllUsuarios() {
         $query = "SELECT * FROM $this->table";

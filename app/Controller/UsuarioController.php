@@ -9,6 +9,28 @@ class UsuarioController {
     public function __construct(Usuario $model) {
         $this->user = $model;
     }
+    public function create($data) {
+        if (!isset($data->nome, $data->email, $data->senha)) {
+            http_response_code(400);
+            echo json_encode(["error" => "Dados incompletos para a criação do usuário."]);
+            return;
+        }
+        $usuarioExistente = $this->user->getUsuarioByEmail($data->email);
+        if ($usuarioExistente) {
+            http_response_code(409);
+            echo json_encode(["error" => "Um usuário com esse e-mail já existe."]);
+            return;
+        }
+
+        $this->user->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
+        if ($this->user->insertUsuario($this->user)) {
+            http_response_code(201);
+            echo json_encode(["message" => "Usuário criado com sucesso."]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["error" => "Erro ao criar usuário."]);
+        }
+    }
     public function login($data) {
         if (!isset($data->email, $data->senha)) {
             http_response_code(400);
@@ -26,32 +48,6 @@ class UsuarioController {
             echo json_encode(["error" => "Email ou senha inválidos."]);
         }
     }
-    
-    public function create($data) {
-        if (!isset($data->nome, $data->email, $data->senha)) {
-            http_response_code(400);
-            echo json_encode(["error" => "Dados incompletos para a criação do usuário."]);
-            return;
-        }
-        
-        $usuarioExistente = $this->user->getUsuarioByEmail($data->email);
-        if ($usuarioExistente) {
-            http_response_code(409);
-            echo json_encode(["error" => "Um usuário com esse e-mail já existe."]);
-            return;
-        }
-        $usuario = new Usuario();
-        $usuario->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
-
-        if ($this->user->insertUsuario($usuario)) {
-            http_response_code(201);
-            echo json_encode(["message" => "Usuário criado com sucesso."]);
-        } else {
-            http_response_code(500);
-            echo json_encode(["error" => "Erro ao criar usuário."]);
-        }
-    }
-
     public function read($id = null) {
         if ($id) {
             $result = $this->user->getUsuarioById($id);
@@ -77,10 +73,9 @@ class UsuarioController {
             return;
         }
 
-        $usuario = new Usuario();
-        $usuario->setUsuarioId($id)->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
+        $this->user->setUsuarioId($id)->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
 
-        if ($this->user->updateUsuario($usuario)) {
+        if ($this->user->updateUsuario($this->user)) {
             http_response_code(200);
             echo json_encode(["message" => "Usuário atualizado com sucesso."]);
         } else {
