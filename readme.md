@@ -127,6 +127,6 @@ Insira a URL base seguida pelo caminho do endpoint. Por exemplo, para criar um n
 Para os métodos que requerem dados (POST e PUT), vá até a aba "Body", selecione "raw" e escolha "JSON" como formato. Então, insira os dados requeridos no formato JSON.
 Pressione o botão "Send" para realizar a requisição.
 
-## Licença
+## Observações
 
-Especifique a licença sob a qual o projeto é disponibilizado, promovendo o uso e contribuição da comunidade.
+Este projeto é para aprendizagem sobre a integração do frontend e backend utilizando linguagens diferentes, as branches são tanto evoluções ocmo versões diferentes, sendo a "master" uma versão mais avançada sem frontend, já existe uma versão mais simples para iniciantes chamada "mvc-basico" e uma branch apartir desse última chamada "com-front"
