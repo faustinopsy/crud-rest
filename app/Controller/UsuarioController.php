@@ -2,13 +2,12 @@
 namespace App\Controller;
 
 use App\Model\Usuario;
-use App\Repository\UsuarioRepository;
 
 class UsuarioController {
-    private $repository;
+    private $user;
 
-    public function __construct(UsuarioRepository $repository) {
-        $this->repository = $repository;
+    public function __construct(Usuario $model) {
+        $this->user = $model;
     }
     public function create($data) {
         if (!isset($data->nome, $data->email, $data->senha)) {
@@ -16,17 +15,15 @@ class UsuarioController {
             echo json_encode(["error" => "Dados incompletos para a criação do usuário."]);
             return;
         }
-        
-        $usuarioExistente = $this->repository->getUsuarioByEmail($data->email);
+        $usuarioExistente = $this->user->getUsuarioByEmail($data->email);
         if ($usuarioExistente) {
             http_response_code(409);
             echo json_encode(["error" => "Um usuário com esse e-mail já existe."]);
             return;
         }
-        $usuario = new Usuario();
-        $usuario->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
 
-        if ($this->repository->insertUsuario($usuario)) {
+        $this->user->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
+        if ($this->user->insertUsuario($this->user)) {
             http_response_code(201);
             echo json_encode(["message" => "Usuário criado com sucesso."]);
         } else {
@@ -41,7 +38,7 @@ class UsuarioController {
             return;
         }
     
-        $usuario = $this->repository->getUsuarioByEmail($data->email);
+        $usuario = $this->user->getUsuarioByEmail($data->email);
         if ($usuario && password_verify($data->senha, $usuario['senha'])) {
             unset($usuario['senha']);
             http_response_code(200);
@@ -53,11 +50,16 @@ class UsuarioController {
     }
     public function read($id = null) {
         if ($id) {
-            $result = $this->repository->getUsuarioById($id);
-            unset($result['senha']);
-            $status = $result ? 200 : 404;
+            $result = $this->user->getUsuarioById($id);
+            if($result){
+                unset($result['senha']);
+                $status = 200 ;
+            }else{
+                $status = 404;
+            }
+            
         } else {
-            $result = $this->repository->getAllUsuarios();
+            $result = $this->user->getAllUsuarios();
             foreach ($result as &$usuario) {
                 unset($usuario['senha']);
             }
@@ -69,17 +71,16 @@ class UsuarioController {
         echo json_encode($result ?: ["message" => "Nenhum usuário encontrado."]);
     }
 
-    public function update($data) {
-        if (!isset($data->usuario_id, $data->nome, $data->email, $data->senha)) {
+    public function update($id, $data) {
+        if (!isset($id, $data->nome, $data->email, $data->senha)) {
             http_response_code(400);
             echo json_encode(["error" => "Dados incompletos para atualização do usuário."]);
             return;
         }
 
-        $usuario = new Usuario();
-        $usuario->setUsuarioId($data->usuario_id)->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
+        $this->user->setUsuarioId($id)->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
 
-        if ($this->repository->updateUsuario($usuario)) {
+        if ($this->user->updateUsuario($this->user)) {
             http_response_code(200);
             echo json_encode(["message" => "Usuário atualizado com sucesso."]);
         } else {
@@ -89,7 +90,7 @@ class UsuarioController {
     }
 
     public function delete($id) {
-        if ($this->repository->deleteUsuario($id)) {
+        if ($this->user->deleteUsuario($id)) {
             http_response_code(200);
             echo json_encode(["message" => "Usuário excluído com sucesso."]);
         } else {
