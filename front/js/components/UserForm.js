@@ -1,7 +1,7 @@
 class UserForm {
     constructor(fetchService, renderCallback) {
         this.fetchService = fetchService;
-        this.renderApp = renderCallback;
+        this.refreshUsersList = renderCallback;
     }
 
     render() {
@@ -34,7 +34,10 @@ class UserForm {
         });
 
         alert('usuário adicionado com sucesso.');
-        this.renderApp('Lista', render);
+        document.getElementById('nome').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('senha').value = '';
+        this.refreshUsersList();
     }
 }
 export default UserForm;
