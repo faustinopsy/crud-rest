@@ -1,5 +1,8 @@
 <?php
-require "../vendor/autoload.php";
+
+namespace App;
+
+require_once "../vendor/autoload.php";
 
 use App\Controller\UsuarioController;
 use App\Model\Usuario;
@@ -22,51 +25,32 @@ $uri = $_SERVER['REQUEST_URI'];
 
 $resposta = null;
 
-
 switch($method){
     case 'GET':
-        switch($uri){
-            case '/users':
-                if(preg_match('/\/users\/(\d+)/', $uri, $match)){
-                    $id = $match[1];
-                    $data = json_decode(file_get_contents('php://input'));
-                    $controller->read($id);
-                    break;
-                }else{
-                    $controller->read();
-                }
-        break;
-           
-            default:
-                echo json_encode(["URI invalido"]);
-        }
+            if(preg_match('/\/users\/(\d+)/', $uri, $match)){
+                $id = $match[1];
+                $data = json_decode(file_get_contents('php://input'));
+                $controller->read($id);
+                break;
+            }else{
+                $controller->read();
+            }
     break;
-    case 'POST': 
-        switch($uri){
-            case '/users':
+    case 'POST':
                 $data = json_decode(file_get_contents('php://input'));
                 $controller->create($data);
-                break;
-
-            default:
-                echo json_encode(["URI invalido"]);
-        }
     break;
-    case 'PUT': 
-        case '/users':
+    case 'PUT':
             if(preg_match('/\/users\/(\d+)/', $uri, $match)){
                 $id = $match[1];
                 $data = json_decode(file_get_contents('php://input'));
                 $controller->update($id, $data);
-                break;
             }
     break;
     case 'DELETE':
-        case '/users':
             if(preg_match('/\/users\/(\d+)/', $uri, $match)){
                 $id = $match[1];
                 $controller->delete($id);
-                break;
             }
     break;
     default:

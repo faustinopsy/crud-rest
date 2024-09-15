@@ -51,8 +51,13 @@ class UsuarioController {
     public function read($id = null) {
         if ($id) {
             $result = $this->user->getUsuarioById($id);
-            unset($result['senha']);
-            $status = $result ? 200 : 404;
+            if($result){
+                unset($result['senha']);
+                $status = 200 ;
+            }else{
+                $status = 404;
+            }
+            
         } else {
             $result = $this->user->getAllUsuarios();
             foreach ($result as &$usuario) {
