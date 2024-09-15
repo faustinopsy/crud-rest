@@ -1,0 +1,116 @@
+.panel {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: inset 8px 4px 7px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+button{
+    border-radius: 0 20px 0 20px;
+    padding: 5px 5px;
+    cursor: pointer;
+}
+.sucesso {
+    background-color: #3438f7;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.sucesso:hover {
+    background-color: #1ef462;
+}
+.update {
+    background-color: #e2ad25;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.update:hover {
+    background-color: #516cf4;
+}
+.delete {
+    background-color: #ff4a4a;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.delete:hover {
+    background-color: #ff1a1a;
+}
+.user-item{
+    display: flex;
+    position: relative;
+    border: dashed 1px;
+    justify-content: space-between;
+    box-shadow: inset 8px 4px 7px 4px rgb(0 0 0 / 16%);
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(25px);
+    border: solid 2x blueviolet;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 0 20px 0 20px;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+.close{
+    position: absolute;
+    right: 7px;
+    top: 5px;
+    cursor: pointer;
+    border: red 2px solid;
+    background-color: black;
+    border-radius: 0px 15px 0px 31px;
+    height: 30px;
+    width: 30px;
+}
+
+input[type=text],[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    box-shadow: inset 8px 4px 7px 4px rgb(0 0 0 / 16%);
+  }
+#updateId{
+    background-color: tomato;
+    cursor: not-allowed;
+}
