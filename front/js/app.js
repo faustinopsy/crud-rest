@@ -8,9 +8,7 @@ class App {
         this.apiBaseUrl = apiBaseUrl;
         this.appElement = document.getElementById('app');
         this.fetchService = new FetchService(this.apiBaseUrl);
-
         this.refreshUsersList = this.renderUsersList.bind(this);
-
         this.updateUserForm = new UpdateUserForm(this.fetchService, this.refreshUsersList);
         this.userForm = new UserForm(this.fetchService, this.refreshUsersList);
         this.usersList = new UsersList(this.fetchService, this.updateUserForm, this.refreshUsersList);
