@@ -19,9 +19,19 @@ new Vue({
             });
         }
     },
-    created() {
-        this.listarUsuarios();
+    directives: {
+        foco: {
+          inserted(el) {
+            el.focus();
+          },
+        },
       },
+    filters: {
+    maiusculas(valor) {
+        if (!valor) return '';
+        return valor.toUpperCase();
+    },
+    },
     methods: {
         listarUsuarios() {
           fetch(this.url)
@@ -93,4 +103,29 @@ new Vue({
           this.editando = false;
         },
     },
+    created() {
+        this.listarUsuarios();
+    },
+    mounted() {
+        console.log('Componente montado!');
+      },
+    template: `
+    <div>
+        <form @submit.prevent="salvarUsuario">
+            <input type="text" v-model="usuario.nome" placeholder="Nome" required>
+            <input type="email" v-model="usuario.email" placeholder="Email" required>
+            <input type="password" v-model="usuario.senha" placeholder="senha" required>
+            <button type="submit">{{ editando ? 'Atualizar' : 'Adicionar' }} Usuário</button>
+          </form>
+        <h1>usuarios Disponíveis</h1>
+        <input type="text" v-foco v-model="busca" placeholder="Buscar produto...">
+        <ul class="user-item">
+            <li v-for="user in usuariosFiltrados" :key="user.id">
+              {{ user.nome | maiusculas  }} - {{ user.email }}
+              <button @click="editarUsuario(user)">Editar</button>
+              <button @click="deletarUsuario(user)">Excluir</button>
+            </li>
+          </ul>
+    </div>
+`,
 });

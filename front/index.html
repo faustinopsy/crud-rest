@@ -8,21 +8,7 @@
 </head>
 <body>
     <div id="app">
-        <form @submit.prevent="salvarUsuario">
-            <input type="text" v-model="usuario.nome" placeholder="Nome" required>
-            <input type="email" v-model="usuario.email" placeholder="Email" required>
-            <input type="password" v-model="usuario.senha" placeholder="senha" required>
-            <button type="submit">{{ editando ? 'Atualizar' : 'Adicionar' }} Usuário</button>
-          </form>
-        <h1>usuarios Disponíveis</h1>
-        <input type="text" v-model="busca" placeholder="Buscar produto...">
-        <ul class="user-item">
-            <li v-for="user in usuariosFiltrados" :key="user.id">
-              {{ user.nome }} - {{ user.email }}
-              <button @click="editarUsuario(user)">Editar</button>
-              <button @click="deletarUsuario(user)">Excluir</button>
-            </li>
-          </ul>
+        
     </div>
 
     <script src="app.js"></script>
