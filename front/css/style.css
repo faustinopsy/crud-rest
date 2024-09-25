@@ -55,6 +55,7 @@ button{
 }
 .user-item{
     display: flex;
+    flex-direction: column;
     position: relative;
     border: dashed 1px;
     justify-content: space-between;
@@ -103,7 +104,7 @@ body.modal-open {
     width: 30px;
 }
 
-input[type=text],[type=password] {
+input[type=text],[type=password],[type=email] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;

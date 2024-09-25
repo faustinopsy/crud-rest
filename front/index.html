@@ -2,13 +2,29 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador de Users SPA</title>
+    <title>Lista de Produtos</title>
     <link rel="stylesheet" href="css/style.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 </head>
 <body>
-    <main id="app"></main>
-    <script type="module" src="js/App.js"></script>
+    <div id="app">
+        <form @submit.prevent="salvarUsuario">
+            <input type="text" v-model="usuario.nome" placeholder="Nome" required>
+            <input type="email" v-model="usuario.email" placeholder="Email" required>
+            <input type="password" v-model="usuario.senha" placeholder="senha" required>
+            <button type="submit">{{ editando ? 'Atualizar' : 'Adicionar' }} Usuário</button>
+          </form>
+        <h1>usuarios Disponíveis</h1>
+        <input type="text" v-model="busca" placeholder="Buscar produto...">
+        <ul class="user-item">
+            <li v-for="user in usuariosFiltrados" :key="user.id">
+              {{ user.nome }} - {{ user.email }}
+              <button @click="editarUsuario(user)">Editar</button>
+              <button @click="deletarUsuario(user)">Excluir</button>
+            </li>
+          </ul>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
