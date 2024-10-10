@@ -1,13 +1,13 @@
 <?php
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Model\Usuario;
 
 class UsuarioController {
     private $user;
 
-    public function __construct(Usuario $model) {
-        $this->user = $model;
+    public function __construct() {
+        $this->user = new Usuario();
     }
     public function create($data) {
         if (!isset($data->nome, $data->email, $data->senha)) {
