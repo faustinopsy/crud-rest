@@ -12,12 +12,14 @@ $privateKey = openssl_pkey_get_private(
     file_get_contents($privateKeyFile),
     $passphrase
 );
-
+$data = time() + 3600;
 $payload = [
     'iss' => 'example.org',
     'aud' => 'example.com',
     'iat' => 1356999524,
-    'nbf' => 1357000000
+    'nbf' => 1357000000,
+    'exp'=> $data
+
 ];
 
 $jwt = JWT::encode($payload, $privateKey, 'RS256');
