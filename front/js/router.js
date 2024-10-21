@@ -6,20 +6,27 @@ import Login from './components/Login.js';
 function getRotaDinamica() {
     const paginasPermitidas = JSON.parse(localStorage.getItem('paginasPermitidas')) || [];
     const rotaDinamica = [];
+    const adminChildren = [];
 
     paginasPermitidas.forEach(page => {
         switch (page.path) {
             case '/form-aluno':
-                rotaDinamica.push({ path: page.path, component: FormAluno });
+                rotaDinamica.push({ path: page.path, component: FormAluno, meta: { precisaDeAutenticacao: true, tipoUsuario: 'aluno' } });
                 break;
             case '/lista-professor':
-                rotaDinamica.push({ path: page.path, component: ListaProfessor });
+                adminChildren.push({ path: 'lista-professor', component: ListaProfessor, meta: { precisaDeAutenticacao: true, tipoUsuario: 'professor' } });
+                rotaDinamica.push({ path: page.path, component: ListaProfessor, meta: { precisaDeAutenticacao: true, tipoUsuario: 'professor' } });
                 break;
             case '/painel-admin':
-                rotaDinamica.push({ path: page.path, component: PainelAdmin });
+                rotaDinamica.push({
+                    path: page.path,
+                    component: PainelAdmin,
+                    meta: { precisaDeAutenticacao: true, tipoUsuario: 'administrador' },
+                    children: adminChildren
+                });
                 break;
             default:
-                console.warn("Página desconhecida:", page.path);
+                rotaDinamica.push({ path: '/', component: Login, meta: { precisaDeAutenticacao: false } });
         }
     });
 
@@ -27,7 +34,8 @@ function getRotaDinamica() {
 }
 
 const routes = [
-    { path: '/', component: Login }
+    { path: '/', component: Login, meta: { precisaDeAutenticacao: false } },
+    { path: '/:pathMatch(.*)*', redirect: '/' }
 ];
 
 const rotaDinamica = getRotaDinamica();
@@ -43,22 +51,23 @@ const router = VueRouter.createRouter({
 
 router.beforeEach((to, from, next) => {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
-
+    console.log('Navegando para:', to);
+    console.log('Usuário Logado:', usuario);
     if (to.matched.some(record => record.meta.precisaDeAutenticacao)) {
         if (!usuario) {
-            next('/');
-        } else {
-            const tipoUsuario = to.meta.tipoUsuario;
-            if (tipoUsuario && (usuario.tipo === tipoUsuario || usuario.tipo === 'administrador')) {
-                next();
-            } else {
-                alert("Acesso negado: Você não tem permissão para acessar esta página.");
-                next('/'); 
-            }
+            console.log()
+            return next({ path: '/' });
         }
-    } else {
-        next();
+
+        const tipoUsuario = to.meta.tipoUsuario;
+        if (usuario.tipo === tipoUsuario || usuario.tipo === 'administrador') {
+            return next();
+        }
+
+        alert("Acesso negado: Você não tem permissão para acessar esta página.");
+        return next({ path: '/' });
     }
+    return next();
 });
 
 export default router;
