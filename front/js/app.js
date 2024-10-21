@@ -11,13 +11,17 @@ created() {
 methods: {
   logout(){
     localStorage.removeItem("usuario");
+    localStorage.removeItem("paginasPermitidas");
     location.reload();
   }
 },
 computed: {
     isAdmin() {
         return this.usuario && this.usuario.tipo === 'administrador';
-    }
+    },
+    isTeacher() {
+      return this.usuario && this.usuario.tipo === 'professor';
+  }
 },
   template:
     `<div>
@@ -26,6 +30,12 @@ computed: {
             <li><router-link to="/painel-admin">Painel Admin</router-link></li>
             <li><router-link to="/lista-professor">Lista Professor</router-link></li>
             <li><a href="#" @click="logout">Logout</a></li>
+        </ul>
+    </nav>
+    <nav v-else-if="isTeacher" class="navbar">
+        <ul>
+            <li><router-link to="/form-aluno">Form Aluno</router-link></li>
+            <li><router-link to="/lista-professor">Lista Professor</router-link></li>
         </ul>
     </nav>
     <nav v-else class="navbar">

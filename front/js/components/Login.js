@@ -22,7 +22,10 @@ export default {
             .then(data => {
                 if (data.usuario) {
                     localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    const paginas = JSON.parse(data.usuario.paginas); 
+                    localStorage.setItem('paginasPermitidas', JSON.stringify(paginas));
                     this.redirecionarUsuario(data.usuario.tipo);
+                    location.reload()
                 } else {
                     alert("Falha no login. Verifique suas credenciais.");
                 }
