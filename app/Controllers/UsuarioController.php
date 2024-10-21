@@ -50,7 +50,7 @@ class UsuarioController {
                 "nome" => $usuario['nome'],
                 "email" => $usuario['email'],
                 "tipo" => $usuario['tipo'],
-                "paginas" => $telas
+                "paginas" => json_decode($telas, true)
             ]]);
         } else {
             http_response_code(401); 
