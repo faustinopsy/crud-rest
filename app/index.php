@@ -19,7 +19,6 @@ $uri = $_SERVER['REQUEST_URI'];
 
 
 if(!$method=="POST" && ($uri=='/login' || $uri=='/users')){
-    die('a');
     $token = new TokenController();
     $token->validarToken();
 }
