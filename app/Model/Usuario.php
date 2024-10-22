@@ -10,6 +10,7 @@ class Usuario {
     private $senha;
     private $conn;
     private $table = "usuarios";
+    private $tipo;
 
     public function __construct() {
         $this->conn = Database::getInstance();
@@ -60,7 +61,14 @@ class Usuario {
     public function getSenha() {
         return $this->senha;
     }
-
+    public function setTipo($tipo): self {
+        $this->tipo = $tipo;
+        return $this;
+    }
+    
+    public function getTipo() {
+        return $this->tipo;
+    }
     public function setSenha($senha): self {
         $this->senha = password_hash($senha, PASSWORD_DEFAULT);
         return $this;

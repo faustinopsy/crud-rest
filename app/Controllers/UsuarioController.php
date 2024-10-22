@@ -25,7 +25,7 @@ class UsuarioController {
         $this->user->setNome($data->nome)->setEmail($data->email)->setSenha($data->senha);
         if ($this->user->insertUsuario($this->user)) {
             http_response_code(201);
-            echo json_encode(["message" => "Usuário criado com sucesso."]);
+            echo json_encode(["success"=> true,"message" => "Usuário criado com sucesso."]);
         } else {
             http_response_code(500);
             echo json_encode(["error" => "Erro ao criar usuário."]);
@@ -41,8 +41,17 @@ class UsuarioController {
         $usuario = $this->user->getUsuarioByEmail($data->email);
         if ($usuario && password_verify($data->senha, $usuario['senha'])) {
             unset($usuario['senha']);
+            $paginas = new PageController();
+            $telas = $paginas->getUserPages($usuario['tipo']);
+            $token = new TokenController();
+            $autorizacao = $token->gerarToken($usuario['tipo'],$telas);
+            
             http_response_code(200);
-            echo json_encode(["message" => "Login bem-sucedido.", "usuario" => $usuario]);
+            echo json_encode(["message" => "Login bem-sucedido.",
+             "usuario" => [
+                "tipo" => $usuario['tipo'],
+                "token" => $autorizacao
+            ]]);
         } else {
             http_response_code(401); 
             echo json_encode(["error" => "Email ou senha inválidos."]);

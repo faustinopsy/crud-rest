@@ -11,5 +11,7 @@
             "email": "rodrigohipnose@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "firebase/php-jwt": "^5.4"
+    }
 }

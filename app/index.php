@@ -3,6 +3,7 @@ namespace App;
 use App\Rotas\Router;
 use App\Http\HttpHeader;
 use App\Rotas\Rotas;
+use App\Controllers\TokenController;
 
 require_once '../vendor/autoload.php';
 
@@ -15,6 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
+
+
+if(!$method=="POST" && ($uri=='/login' || $uri=='/users')){
+    $token = new TokenController();
+    $token->validarToken();
+}
+
 
 $arrayRotas = Rotas::fastRotas();
 
