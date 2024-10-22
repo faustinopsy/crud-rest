@@ -7,21 +7,23 @@ const mainApp = Vue.createApp({
     },
     created() {
         this.usuario = JSON.parse(localStorage.getItem('usuario'));
+        this.token = localStorage.getItem('token');
     },
     methods: {
         logout() {
             localStorage.removeItem("usuario");
-            localStorage.removeItem("paginasPermitidas");
+            localStorage.removeItem("token");
             this.usuario = null;
+            this.token = null;
             this.$router.push('/');
         }
     },
     computed: {
         isAdmin() {
-            return this.usuario && this.usuario.tipo === 'administrador';
+            return this.usuario && this.usuario === 'administrador';
         },
         isTeacher() {
-            return this.usuario && this.usuario.tipo === 'professor';
+            return this.usuario && this.usuario === 'professor';
         }
     },
     template: `
@@ -38,6 +40,12 @@ const mainApp = Vue.createApp({
                     <li><router-link to="/form-aluno">Form Aluno</router-link></li>
                     <li><router-link to="/lista-professor">Lista Professor</router-link></li>
                     <li><a href="#" @click="logout">Logout</a></li>
+                </ul>
+            </nav>
+            <nav v-else class="navbar">
+                <ul>
+                    <li><router-link to="/form-aluno">Form Aluno</router-link></li>
+                    <li><a href="/" >Login</a></li>
                 </ul>
             </nav>
             <router-view></router-view>

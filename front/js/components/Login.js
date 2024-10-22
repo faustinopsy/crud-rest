@@ -21,9 +21,8 @@ export default {
             .then(response => response.json())
             .then(data => {
                 if (data.usuario) {
-                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
-                    const paginas = JSON.parse(data.usuario.paginas); 
-                    localStorage.setItem('paginasPermitidas', JSON.stringify(paginas));
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario.tipo));
+                    localStorage.setItem('token', data.usuario.token);
                     this.redirecionarUsuario(data.usuario.tipo);
                     location.reload()
                 } else {
