@@ -1,8 +1,8 @@
+import UpdateUserForm from './UpdateUserForm.js';
 class UsersList {
-    constructor(fetchService, updateUserForm, refreshUsersList) {
+    constructor(fetchService, tipoUser) {
         this.fetchService = fetchService;
-        this.updateUserForm = updateUserForm;
-        this.refreshUsersList = refreshUsersList;
+        this.tipoUser = tipoUser;
     }
 
     async render() {
@@ -14,8 +14,8 @@ class UsersList {
                 <div class="user-item">
                     ${user.usuario_id} - ${user.nome} - ${user.email}
                     <div class="grupo"> 
-                        <button class="button update" data-id="${user.usuario_id}">Editar</button>
-                        <button class="button delete" data-id="${user.usuario_id}">Deletar</button>
+                        ${this.tipoUser === 'administrador' ? `<button class="button update" data-id="${user.usuario_id}">Editar</button>` : ''}
+                        ${this.tipoUser === 'administrador' ? `<button class="button delete" data-id="${user.usuario_id}">Deletar</button>` : ''}
                     </div>
                 </div>
             `;
@@ -25,24 +25,38 @@ class UsersList {
     }
 
     afterRender() {
-        const editButtons = document.querySelectorAll('.update');
-        editButtons.forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const id = e.target.getAttribute('data-id');
-                const user = await this.fetchService.fetch(`/users/${id}`);
-                this.updateUserForm.open(user);
+        this.appElement = document.getElementById('app');
+        if (this.tipoUser === 'administrador') {
+            const editButtons = document.querySelectorAll('.update');
+            editButtons.forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const user = await this.fetchService.fetch(`/users/${id}`);
+                    const updateForm = new UpdateUserForm(this.fetchService, () => this.refreshUsersList());
+                    this.appElement.innerHTML = updateForm.render();
+                    updateForm.afterRender();
+                    updateForm.open(user);
+                });
             });
-        });
 
-        const deleteButtons = document.querySelectorAll('.delete');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const id = e.target.getAttribute('data-id');
-                if (confirm('Tem certeza que deseja deletar este usuário?')) {
-                    await this.updateUserForm.deleteUser(id);
-                }
+            const deleteButtons = document.querySelectorAll('.delete');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    if (confirm('Tem certeza que deseja deletar este usuário?')) {
+                       
+                        const updateForm = new UpdateUserForm(this.fetchService, () => this.refreshUsersList());
+                        this.appElement.innerHTML = updateForm.render();
+                        updateForm.afterRender();
+                        await updateForm.deleteUser(id);
+                    }
+                });
             });
-        });
+        }
+    }
+
+    refreshUsersList() {
+        location.hash = '#/'
     }
 }
 

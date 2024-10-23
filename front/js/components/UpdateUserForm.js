@@ -5,6 +5,7 @@ class UpdateUserForm {
         this.modal = null;
         this.form = null;
     }
+
     render() {
         return `
             <div id="updateUserModal" class="modal" style="display: none;">
@@ -45,6 +46,7 @@ class UpdateUserForm {
     closeModal() {
         this.modal.style.display = 'none';
         this.form.reset(); 
+        location.reload()
     }
 
     async updateUser(event) {

@@ -1,23 +1,29 @@
 class UserForm {
-    constructor(fetchService, renderCallback) {
+    constructor(fetchService, tipoUser) {
         this.fetchService = fetchService;
-        this.refreshUsersList = renderCallback;
+        this.tipoUser = tipoUser;
         this.form = null;
     }
+
     render() {
-        return `
-            <form id="addForm">
-                Nome: <input type="text" name="nome"><br>
-                E-mail: <input type="text" name="email"><br>
-                Senha: <input type="password" name="senha"><br>
-                <button type="submit">Adicionar Usuário</button>
-            </form>
-        `;
+        if (this.tipoUser === 'professor' || this.tipoUser === 'administrador') {
+            return `
+                <form id="addForm">
+                    Nome: <input type="text" name="nome"><br>
+                    E-mail: <input type="text" name="email"><br>
+                    Senha: <input type="password" name="senha"><br>
+                    <button type="submit">Adicionar Usuário</button>
+                </form>
+            `;
+        }
+        return `<p>Você não tem permissão para adicionar usuários.</p>`;
     }
 
     afterRender() {
-        this.form = document.getElementById('addForm');
-        this.form.addEventListener('submit', (e) => this.addItem(e));
+        if (this.tipoUser === 'professor' || this.tipoUser === 'administrador') {
+            this.form = document.getElementById('addForm');
+            this.form.addEventListener('submit', (e) => this.addItem(e));
+        }
     }
 
     async addItem(event) {
@@ -29,6 +35,7 @@ class UserForm {
             alert('Todos os campos são obrigatórios.');
             return;
         }
+
         await this.fetchService.fetch('/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -37,7 +44,6 @@ class UserForm {
 
         alert('Usuário adicionado com sucesso.');
         this.form.reset();
-        this.refreshUsersList();
     }
 }
 
