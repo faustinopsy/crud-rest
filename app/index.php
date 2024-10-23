@@ -21,8 +21,8 @@ $uri = $_SERVER['REQUEST_URI'];
 if(!$method=="POST" && ($uri=='/login' || $uri=='/users')){
     $token = new TokenController();
     $token->validarToken();
-}
 
+}
 
 $arrayRotas = Rotas::fastRotas();
 

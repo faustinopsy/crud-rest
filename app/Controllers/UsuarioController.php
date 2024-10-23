@@ -81,6 +81,12 @@ class UsuarioController {
     }
 
     public function update($id, $data) {
+        $token = new TokenController();
+        if(!$token->tipoUser() == "administrador"){
+            http_response_code(401); 
+            echo json_encode(["error" => "Usuário não autorizado."]);
+            exit;
+        }
         if (!isset($id, $data->nome, $data->email, $data->senha)) {
             http_response_code(400);
             echo json_encode(["error" => "Dados incompletos para atualização do usuário."]);
@@ -99,6 +105,12 @@ class UsuarioController {
     }
 
     public function delete($id) {
+        $token = new TokenController();
+        if(!$token->tipoUser() == "administrador"){
+            http_response_code(401); 
+            echo json_encode(["error" => "Usuário não autorizado."]);
+            exit;
+        }
         if ($this->user->deleteUsuario($id)) {
             http_response_code(200);
             echo json_encode(["message" => "Usuário excluído com sucesso."]);

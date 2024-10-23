@@ -2,7 +2,8 @@ import router from './router.js';
 const mainApp = Vue.createApp({
     data() {
         return {
-            usuario: null
+            usuario: null,
+            token: null
         };
     },
     created() {
