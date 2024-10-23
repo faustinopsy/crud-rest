@@ -2,7 +2,6 @@ class FetchService {
     constructor(apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;
     }
-
     async fetch(url, options = {}) {
         const token = localStorage.getItem('token');
         if (!options.headers) {

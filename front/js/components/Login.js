@@ -32,7 +32,7 @@ class Login {
 
                 localStorage.setItem('token', response.usuario.token);
                 localStorage.setItem('tipo', response.usuario.tipo);
-                window.location.href = '/painel-admin'; // Redireciona após o login
+                window.location.href = '/painel-admin'; 
             } catch (error) {
                 alert('Falha no login. Verifique suas credenciais.');
             }
